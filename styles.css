@@ -1,0 +1,30 @@
+.shp-action { float: right; }
+
+.shp-btn-disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.shp-btn-enabled {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.shp-price-input { min-width: 90px; }
+
+#shp-custom-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  text-align: center;
+  outline: none;
+  padding: 0;
+}
+
+#shp-custom-input::placeholder { color: rgba(255, 255, 255, 0.3); }
+
+.shp-text-error { color: #e84c4c !important; }
+.shp-text-success { color: #a5cf4f !important; }

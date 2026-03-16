@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "Steam 충전 도우미",
+  "version": "0.1",
+  "description": "어디서든 금액을 입력하면 Steam 충전 페이지로 자동 이동 후 결제까지 처리합니다.",
+  "author": "Daeho Ro",
+  "homepage_url": "https://github.com/daeho-ro/steam-addfunds-extension",
+  "permissions": ["scripting", "activeTab"],
+  "content_scripts": [
+    {
+      "matches": ["https://store.steampowered.com/steamaccount/addfunds*"],
+      "css": ["styles.css"],
+      "js": ["config.js", "content.js"]
+    }
+  ]
+}
