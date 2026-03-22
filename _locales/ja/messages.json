@@ -1,0 +1,29 @@
+{
+  "extName": {
+    "message": "Steam 入金ヘルパー"
+  },
+  "extDescription": {
+    "message": "Steam ウォレットに任意の金額を入力して入金できます。"
+  },
+  "title": {
+    "message": "Steam 入金"
+  },
+  "placeholder": {
+    "message": "例: $AMOUNT$",
+    "placeholders": { "amount": { "content": "$1" } }
+  },
+  "buttonText": {
+    "message": "入金する"
+  },
+  "minAmountText": {
+    "message": "最低 $AMOUNT$ 以上",
+    "placeholders": { "amount": { "content": "$1" } }
+  },
+  "inputError": {
+    "message": "$AMOUNT$ 以上を入力してください。",
+    "placeholders": { "amount": { "content": "$1" } }
+  },
+  "formNotFoundError": {
+    "message": "入金フォームが見つかりません。ページを更新してください。"
+  }
+}

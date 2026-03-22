@@ -1,0 +1,29 @@
+{
+  "extName": {
+    "message": "Steam 充值助手"
+  },
+  "extDescription": {
+    "message": "在 Steam 钱包中输入自定义金额进行充值。"
+  },
+  "title": {
+    "message": "Steam 充值"
+  },
+  "placeholder": {
+    "message": "例如: $AMOUNT$",
+    "placeholders": { "amount": { "content": "$1" } }
+  },
+  "buttonText": {
+    "message": "充值"
+  },
+  "minAmountText": {
+    "message": "最低 $AMOUNT$",
+    "placeholders": { "amount": { "content": "$1" } }
+  },
+  "inputError": {
+    "message": "请输入 $AMOUNT$ 或以上金额。",
+    "placeholders": { "amount": { "content": "$1" } }
+  },
+  "formNotFoundError": {
+    "message": "未找到充值表单，请刷新页面。"
+  }
+}
