@@ -1,0 +1,35 @@
+name: Deploy Extension
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Zip extension
+        run: zip -r extension.zip manifest.json content.js styles.css _locales/
+
+      - name: Deploy
+        uses: GreedyLabs/action-deploy-browser-extension@v1
+        with:
+          zip-path: extension.zip
+          targets: chrome, edge
+          chrome-extension-id: ${{ vars.CHROME_EXTENSION_ID }}
+          edge-product-id: ${{ vars.EDGE_PRODUCT_ID }}
+          publish: ${{ startsWith(github.ref, 'refs/tags/') }}
+        env:
+          CHROME_SERVICE_ACCOUNT_KEY: ${{ secrets.CHROME_SERVICE_ACCOUNT_KEY }}
+          EDGE_CLIENT_ID: ${{ secrets.EDGE_CLIENT_ID }}
+          EDGE_API_KEY: ${{ secrets.EDGE_API_KEY }}
