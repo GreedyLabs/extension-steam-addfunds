@@ -1,0 +1,36 @@
+{
+  "name": "steam-addfunds-helper",
+  "version": "0.3.1",
+  "description": "Browser extension that lets you add a custom amount to your Steam wallet.",
+  "private": true,
+  "author": "GreedyLabs",
+  "homepage": "https://github.com/GreedyLabs/extension-steam-addfunds",
+  "license": "SEE LICENSE IN LICENSE",
+  "packageManager": "pnpm@11.5.1",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "node scripts/build.mjs --watch",
+    "typecheck": "tsc",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "ext:lint": "pnpm run build && web-ext lint --source-dir dist",
+    "build:zip": "pnpm run build && rm -f extension.zip && cd dist && zip -r ../extension.zip . -x '*.DS_Store'",
+    "check": "pnpm run typecheck && pnpm run lint && pnpm run format:check && pnpm run test"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.18.0",
+    "@types/chrome": "^0.1.42",
+    "esbuild": "^0.28.0",
+    "eslint": "^9.18.0",
+    "globals": "^15.14.0",
+    "prettier": "^3.4.2",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.60.1",
+    "vitest": "^2.1.8",
+    "web-ext": "^8.3.0"
+  }
+}

@@ -1,0 +1,5 @@
+# Dependencies allowed to run install/build scripts (pnpm blocks them by default).
+# esbuild powers vitest; spawn-sync is pulled in transitively and runs a postinstall.
+allowBuilds:
+  esbuild: true
+  spawn-sync: true
