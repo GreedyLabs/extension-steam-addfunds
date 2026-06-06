@@ -1,4 +1,12 @@
-.shp-action { float: right; }
+:root {
+  --shp-error: #e84c4c;
+  /* Matches Steam's default preset-price card width so the input lines up. */
+  --shp-input-min-width: 90px;
+}
+
+.shp-action {
+  float: right;
+}
 
 .shp-btn-disabled {
   pointer-events: none;
@@ -10,7 +18,9 @@
   opacity: 1;
 }
 
-.shp-price-input { min-width: 90px; }
+.shp-price-input {
+  min-width: var(--shp-input-min-width);
+}
 
 #shp-custom-input {
   width: 100%;
@@ -24,10 +34,19 @@
   padding: 0;
 }
 
-#shp-custom-input::placeholder { color: rgba(255, 255, 255, 0.3); }
+#shp-custom-input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
 
+/* Hide the native number-input spinners across engines. */
 #shp-custom-input::-webkit-outer-spin-button,
-#shp-custom-input::-webkit-inner-spin-button { -webkit-appearance: none; }
-#shp-custom-input { -moz-appearance: textfield; }
+#shp-custom-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+#shp-custom-input {
+  -moz-appearance: textfield;
+}
 
-.shp-text-error { color: #e84c4c !important; }
+.shp-text-error {
+  color: var(--shp-error) !important;
+}

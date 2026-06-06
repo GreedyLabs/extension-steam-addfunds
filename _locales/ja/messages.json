@@ -8,10 +8,6 @@
   "title": {
     "message": "Steam 入金"
   },
-  "placeholder": {
-    "message": "例: $AMOUNT$",
-    "placeholders": { "amount": { "content": "$1" } }
-  },
   "buttonText": {
     "message": "入金する"
   },

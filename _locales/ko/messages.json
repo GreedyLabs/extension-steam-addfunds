@@ -8,10 +8,6 @@
   "title": {
     "message": "Steam 충전"
   },
-  "placeholder": {
-    "message": "예: $AMOUNT$",
-    "placeholders": { "amount": { "content": "$1" } }
-  },
   "buttonText": {
     "message": "자금 추가"
   },

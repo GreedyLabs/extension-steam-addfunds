@@ -8,10 +8,6 @@
   "title": {
     "message": "Steam 充值"
   },
-  "placeholder": {
-    "message": "例如: $AMOUNT$",
-    "placeholders": { "amount": { "content": "$1" } }
-  },
   "buttonText": {
     "message": "充值"
   },

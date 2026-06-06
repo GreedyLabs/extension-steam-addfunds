@@ -8,10 +8,6 @@
   "title": {
     "message": "Add Steam Funds"
   },
-  "placeholder": {
-    "message": "e.g. $AMOUNT$",
-    "placeholders": { "amount": { "content": "$1" } }
-  },
   "buttonText": {
     "message": "Add Funds"
   },
