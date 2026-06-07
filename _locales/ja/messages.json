@@ -21,5 +21,15 @@
   },
   "formNotFoundError": {
     "message": "入金フォームが見つかりません。ページを更新してください。"
+  },
+  "cartTopupButton": {
+    "message": "必要分 $AMOUNT$ をチャージ",
+    "placeholders": { "amount": { "content": "$1" } }
+  },
+  "addfundsFromCart": {
+    "message": "カートの購入に必要な金額です"
+  },
+  "addfundsClampedToMin": {
+    "message": "最低チャージ額に設定しました。残高が一部残ります。"
   }
 }

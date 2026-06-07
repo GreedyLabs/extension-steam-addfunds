@@ -7,7 +7,7 @@ model: sonnet
 
 You review changes to the **Steam Add Funds Helper** Manifest V3 extension. The extension injects a custom amount-input card into Steam's `https://store.steampowered.com/steamaccount/addfunds` page via a content script.
 
-Source lives in `src/` as TypeScript (`src/content.ts` + `src/currency.ts`); esbuild bundles it into a single `dist/content.js`. The repo ships nothing pre-built — `dist/` is git-ignored and produced by `pnpm run build`. Review the TypeScript in `src/`, not generated output.
+Source is TypeScript: entry content scripts at `src/` (`content.ts` for the add-funds page, `cart.ts` for the cart) with shared modules in `src/lib/` (money, currency, amount-field, dom). esbuild bundles each entry into `dist/content.js` / `dist/cart.js`. The repo ships nothing pre-built — `dist/` is git-ignored and produced by `pnpm run build`. Review the TypeScript in `src/`, not generated output.
 
 When invoked, inspect the current diff (`git diff`, `git diff --staged`) and the working tree, then report findings grouped by severity (Blocker / Should-fix / Nit). Be concrete with `file:line` citations.
 
@@ -39,7 +39,7 @@ Check these dimensions:
 ## 5. Build & release packaging
 
 - `pnpm run typecheck` (tsc, strict) and `pnpm run lint` must pass — flag any type errors or `any` escapes introduced.
-- The build (`scripts/build.mjs`) bundles `src/content.ts` and copies `manifest.json`, `styles.css`, `_locales/` into `dist/`. If a new runtime file or asset is added, confirm the build copies it into `dist/` — otherwise it won't ship.
+- The build (`scripts/build.mjs`) bundles the `src/` entries and copies `manifest.json`, `styles.css`, `_locales/` into `dist/`. If a new entry or asset is added, confirm the build emits/copies it into `dist/` — otherwise it won't ship.
 - `manifest.json` `content_scripts.js` should reference only the bundled `content.js`.
 
 Do not edit files. Produce a review only. End with a one-line verdict: SHIP / FIX-FIRST / BLOCK.

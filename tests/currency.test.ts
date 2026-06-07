@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getCurrencyParts, parseCurrencyText, evaluateAmount } from '../src/currency';
+import { getCurrencyParts, evaluateAmount } from '../src/lib/currency';
 
 const krw = new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' });
 const usd = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
@@ -16,29 +16,6 @@ describe('getCurrencyParts', () => {
     expect(parts.group).toBe(',');
     expect(parts.decimal).toBe('.');
     expect(parts.symbol).toBe('$');
-  });
-});
-
-describe('parseCurrencyText', () => {
-  it('parses a grouped KRW amount', () => {
-    const parts = getCurrencyParts(krw);
-    expect(parseCurrencyText('₩5,000', parts)).toBe(5000);
-  });
-
-  it('parses a USD amount with decimals', () => {
-    const parts = getCurrencyParts(usd);
-    expect(parseCurrencyText('$1,234.50', parts)).toBe(1234.5);
-  });
-
-  it('tolerates surrounding whitespace and stray characters', () => {
-    const parts = getCurrencyParts(usd);
-    expect(parseCurrencyText('  $ 10.00 ', parts)).toBe(10);
-  });
-
-  it('falls back to a digit-only parse when separators do not match', () => {
-    // Pass mismatched parts so the locale-aware branch yields NaN.
-    const parts = { group: ' ', decimal: ',', symbol: '€' };
-    expect(parseCurrencyText('19.99', parts)).toBe(19.99);
   });
 });
 

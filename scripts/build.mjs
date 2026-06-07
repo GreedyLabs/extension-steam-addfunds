@@ -13,12 +13,12 @@ const OUT = 'dist';
 const watch = process.argv.includes('--watch');
 
 const options = {
-  entryPoints: ['src/content.ts'],
+  entryPoints: ['src/content.ts', 'src/cart.ts'],
   bundle: true,
   format: 'iife',
   target: 'es2022',
   charset: 'utf8',
-  outfile: `${OUT}/content.js`,
+  outdir: OUT,
 };
 
 function copyStatics() {

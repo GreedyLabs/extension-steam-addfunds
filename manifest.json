@@ -20,6 +20,12 @@
       "css": ["styles.css"],
       "js": ["content.js"],
       "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://store.steampowered.com/cart*"],
+      "css": ["styles.css"],
+      "js": ["cart.js"],
+      "run_at": "document_idle"
     }
   ]
 }
