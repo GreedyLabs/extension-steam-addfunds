@@ -1,4 +1,12 @@
-.shp-action { float: right; }
+:root {
+  --shp-error: #e84c4c;
+  /* Matches Steam's default preset-price card width so the input lines up. */
+  --shp-input-min-width: 90px;
+}
+
+.shp-action {
+  float: right;
+}
 
 .shp-btn-disabled {
   pointer-events: none;
@@ -10,7 +18,9 @@
   opacity: 1;
 }
 
-.shp-price-input { min-width: 90px; }
+.shp-price-input {
+  min-width: var(--shp-input-min-width);
+}
 
 #shp-custom-input {
   width: 100%;
@@ -24,10 +34,45 @@
   padding: 0;
 }
 
-#shp-custom-input::placeholder { color: rgba(255, 255, 255, 0.3); }
+#shp-custom-input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
 
+/* Hide the native number-input spinners across engines. */
 #shp-custom-input::-webkit-outer-spin-button,
-#shp-custom-input::-webkit-inner-spin-button { -webkit-appearance: none; }
-#shp-custom-input { -moz-appearance: textfield; }
+#shp-custom-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+#shp-custom-input {
+  -moz-appearance: textfield;
+}
 
-.shp-text-error { color: #e84c4c !important; }
+.shp-text-error {
+  color: var(--shp-error) !important;
+}
+
+/* Cart page top-up button: matches Steam's DialogButton geometry, green color. */
+.shp-cart-btn {
+  box-sizing: content-box;
+  display: block;
+  width: 100%;
+  margin: 6px 0 2px;
+  padding: 0;
+  border: 0;
+  border-radius: 2px;
+  font: inherit;
+  font-size: 14px;
+  line-height: 32px;
+  text-align: center;
+  text-decoration: none;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+  background: linear-gradient(to right, #75b022, #588a1b);
+  transition: background 0.2s ease-out;
+}
+
+.shp-cart-btn:hover {
+  color: #fff;
+  background: linear-gradient(to right, #8ed629, #6aa621);
+}

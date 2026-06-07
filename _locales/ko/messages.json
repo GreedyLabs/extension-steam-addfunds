@@ -8,10 +8,6 @@
   "title": {
     "message": "Steam 충전"
   },
-  "placeholder": {
-    "message": "예: $AMOUNT$",
-    "placeholders": { "amount": { "content": "$1" } }
-  },
   "buttonText": {
     "message": "자금 추가"
   },
@@ -25,5 +21,15 @@
   },
   "formNotFoundError": {
     "message": "충전 폼을 찾을 수 없습니다. 페이지를 새로고침 해주세요."
+  },
+  "cartTopupButton": {
+    "message": "필요 금액 $AMOUNT$ 충전하기",
+    "placeholders": { "amount": { "content": "$1" } }
+  },
+  "addfundsFromCart": {
+    "message": "장바구니 결제에 필요한 금액입니다"
+  },
+  "addfundsClampedToMin": {
+    "message": "최소 충전액으로 설정했습니다. 잔액이 일부 남습니다."
   }
 }

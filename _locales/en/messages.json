@@ -8,10 +8,6 @@
   "title": {
     "message": "Add Steam Funds"
   },
-  "placeholder": {
-    "message": "e.g. $AMOUNT$",
-    "placeholders": { "amount": { "content": "$1" } }
-  },
   "buttonText": {
     "message": "Add Funds"
   },
@@ -25,5 +21,15 @@
   },
   "formNotFoundError": {
     "message": "Payment form not found. Please refresh the page."
+  },
+  "cartTopupButton": {
+    "message": "Top up $AMOUNT$ for this cart",
+    "placeholders": { "amount": { "content": "$1" } }
+  },
+  "addfundsFromCart": {
+    "message": "Amount needed for your cart"
+  },
+  "addfundsClampedToMin": {
+    "message": "Set to the minimum top-up; some balance will remain."
   }
 }
