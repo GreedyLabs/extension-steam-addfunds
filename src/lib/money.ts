@@ -7,6 +7,11 @@
  * pair Steam already puts on the page, then reuse it to parse/format others.
  */
 
+export interface DigitGrouping {
+  primary: number;
+  secondary: number;
+}
+
 export interface MoneyFormat {
   prefix: string;
   suffix: string;
@@ -14,17 +19,30 @@ export interface MoneyFormat {
   decimal: string;
   decimals: number;
   factor: number; // minor units per display unit (e.g. 100)
+  grouping?: DigitGrouping;
 }
 
 /** Insert a thousands separator into a run of digits. */
-export function groupInteger(digits: string, sep: string): string {
-  if (!sep || digits.length <= 3) return digits;
-  let out = '';
-  for (let i = 0; i < digits.length; i += 1) {
-    if (i > 0 && (digits.length - i) % 3 === 0) out += sep;
-    out += digits[i];
+export function groupInteger(
+  digits: string,
+  sep: string,
+  grouping: DigitGrouping = { primary: 3, secondary: 3 },
+): string {
+  if (!sep) return digits;
+  const primary =
+    Number.isSafeInteger(grouping.primary) && grouping.primary > 0 ? grouping.primary : 3;
+  const secondary =
+    Number.isSafeInteger(grouping.secondary) && grouping.secondary > 0 ? grouping.secondary : 3;
+  const groups: string[] = [];
+  let end = digits.length;
+  let width = primary;
+  while (end > 0) {
+    const start = Math.max(0, end - width);
+    groups.unshift(digits.slice(start, end));
+    end = start;
+    width = secondary;
   }
-  return out;
+  return groups.join(sep);
 }
 
 /** Split a formatted amount into the text before/after the number and the numeric core. */
@@ -52,7 +70,7 @@ function normalizeNumber(core: string): {
   let decimals = 0;
 
   // Spaces/apostrophes are always grouping separators; note then drop them.
-  const spaceGroup = /\d[\s'’]\d/.exec(core);
+  const spaceGroup = /\d([\s'’])\d/.exec(core);
   let s = core.replace(/[\s'’]/g, '');
 
   const hasComma = s.includes(',');
@@ -101,6 +119,13 @@ export function deriveFactor(minorUnits: number | string, formattedText: string)
 export function deriveFormat(minorUnits: number | string, formattedText: string): MoneyFormat {
   const { prefix, numCore, suffix } = extractNumeric(formattedText);
   const n = normalizeNumber(numCore);
+  const integer = n.decimal ? numCore.slice(0, numCore.lastIndexOf(n.decimal)) : numCore;
+  const groups = n.group ? integer.split(n.group) : [];
+  // Two separators distinguish Indian grouping from the default three-digit groups.
+  const grouping =
+    groups.length >= 3 && groups.every((part) => /^\d+$/.test(part))
+      ? { primary: groups.at(-1)!.length, secondary: groups.at(-2)!.length }
+      : undefined;
   return {
     prefix,
     suffix,
@@ -109,6 +134,7 @@ export function deriveFormat(minorUnits: number | string, formattedText: string)
     decimal: n.decimal,
     decimals: n.decimals,
     factor: deriveFactor(minorUnits, formattedText),
+    ...(grouping && (grouping.primary !== 3 || grouping.secondary !== 3) ? { grouping } : {}),
   };
 }
 
@@ -117,7 +143,7 @@ export function formatMoney(value: number, fmt: MoneyFormat): string {
   const sign = value < 0 ? '-' : '';
   const fixed = Math.abs(value).toFixed(fmt.decimals);
   const dot = fixed.indexOf('.');
-  const intPart = groupInteger(dot === -1 ? fixed : fixed.slice(0, dot), fmt.group);
+  const intPart = groupInteger(dot === -1 ? fixed : fixed.slice(0, dot), fmt.group, fmt.grouping);
   const frac = dot === -1 ? '' : fixed.slice(dot + 1);
   const num = frac ? intPart + (fmt.decimal || '.') + frac : intPart;
   return fmt.prefix + sign + num + fmt.suffix;

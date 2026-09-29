@@ -26,10 +26,64 @@
     "message": "必要分 $AMOUNT$ をチャージ",
     "placeholders": { "amount": { "content": "$1" } }
   },
-  "addfundsFromCart": {
-    "message": "カートの購入に必要な金額です"
-  },
   "addfundsClampedToMin": {
-    "message": "最低チャージ額に設定しました。残高が一部残ります。"
+    "message": "最低入金額を適用しました。"
+  },
+  "modeLabel": {
+    "message": "入金方法"
+  },
+  "modeAmount": {
+    "message": "入金額を指定"
+  },
+  "modeTarget": {
+    "message": "目標残高を指定"
+  },
+  "amountLabel": {
+    "message": "入金する金額"
+  },
+  "targetLabel": {
+    "message": "目標のウォレット残高"
+  },
+  "targetHint": {
+    "message": "現在の残高から不足している金額だけを計算します。"
+  },
+  "invalidAmountError": {
+    "message": "有効な金額を入力してください。対応していない小数桁数や大きすぎる金額は使用できません。"
+  },
+  "balanceUnavailable": {
+    "message": "現在の残高を確認できないため、目標残高に必要な金額を計算できません。"
+  },
+  "targetCovered": {
+    "message": "残高はすでに目標額以上です。追加の入金は必要ありません。"
+  },
+  "targetRounded": {
+    "message": "入力可能な金額の単位で切り上げました。"
+  },
+  "previewTitle": {
+    "message": "入金額の計算プレビュー"
+  },
+  "previewCurrent": {
+    "message": "現在のウォレット残高"
+  },
+  "previewTopup": {
+    "message": "入金額"
+  },
+  "previewAfter": {
+    "message": "入金後の予想残高"
+  },
+  "previewEmpty": {
+    "message": "金額を入力すると予想残高を確認できます。"
+  },
+  "unknownBalance": {
+    "message": "確認できません"
+  },
+  "backToCart": {
+    "message": "カートに戻る"
+  },
+  "buttonBusy": {
+    "message": "移動中…"
+  },
+  "presetAmountsLabel": {
+    "message": "入金額のクイック選択"
   }
 }

@@ -16,6 +16,32 @@ describe('getCurrencyParts', () => {
     expect(parts.group).toBe(',');
     expect(parts.decimal).toBe('.');
     expect(parts.symbol).toBe('$');
+    expect(parts.grouping).toEqual({ primary: 3, secondary: 3 });
+  });
+
+  it('learns Indian grouping widths from the locale formatter', () => {
+    const parts = getCurrencyParts(
+      new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }),
+    );
+    expect(parts.group).toBe(',');
+    expect(parts.decimal).toBe('.');
+    expect(parts.grouping).toEqual({ primary: 3, secondary: 2 });
+  });
+
+  it('learns the locale decimal separator even when the currency omits fractions', () => {
+    const parts = getCurrencyParts(
+      new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'JPY' }),
+    );
+    expect(parts.group).toBe('.');
+    expect(parts.decimal).toBe(',');
+  });
+
+  it('finds grouping in locales that do not group four-digit amounts', () => {
+    const parts = getCurrencyParts(
+      new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }),
+    );
+    expect(parts.group).toBe('.');
+    expect(parts.decimal).toBe(',');
   });
 });
 
@@ -26,8 +52,23 @@ describe('evaluateAmount', () => {
     expect(evaluateAmount('', min)).toEqual({ status: 'empty', amount: NaN });
   });
 
-  it('reports empty for non-numeric input', () => {
-    expect(evaluateAmount('abc', min)).toEqual({ status: 'empty', amount: NaN });
+  it.each(['abc', '5000abc', 'NaN', 'Infinity', '-5000', '+5000', '5e3', '5,000'])(
+    'reports invalid for nonblank malformed input: %s',
+    (value) => expect(evaluateAmount(value, min)).toEqual({ status: 'invalid', amount: NaN }),
+  );
+
+  it('rejects amounts that cannot be represented safely', () => {
+    expect(evaluateAmount('9007199254740992', min)).toEqual({ status: 'invalid', amount: NaN });
+    expect(evaluateAmount('9'.repeat(400), min)).toEqual({ status: 'invalid', amount: NaN });
+  });
+
+  it('accepts zero as an amount below the minimum, not an empty value', () => {
+    expect(evaluateAmount('0', min)).toEqual({ status: 'below', amount: 0 });
+  });
+
+  it('supports decimal currency amounts and a trailing decimal point', () => {
+    expect(evaluateAmount('5.25', 5)).toEqual({ status: 'valid', amount: 5.25 });
+    expect(evaluateAmount('5.', 5)).toEqual({ status: 'valid', amount: 5 });
   });
 
   it('reports below when under the minimum', () => {

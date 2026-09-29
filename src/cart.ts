@@ -16,9 +16,9 @@ import {
   type MoneyFormat,
 } from './lib/money';
 import { el, warn } from './lib/dom';
+import { createCartHref } from './lib/cart-context';
 
 const BTN_CLASS = 'shp-cart-btn';
-const ADDFUNDS_URL = 'https://store.steampowered.com/steamaccount/addfunds/';
 const t = chrome.i18n.getMessage;
 
 function readFormat(): MoneyFormat | null {
@@ -37,6 +37,7 @@ function readFormat(): MoneyFormat | null {
 /** The live total (display units) inside a summary box — its only money-bearing leaf. */
 function readBoxTotal(box: Element): number | null {
   for (const node of box.querySelectorAll('*')) {
+    if (node.closest(`.${BTN_CLASS}`)) continue;
     if (node.childElementCount !== 0) continue;
     const value = parseMoney(node.textContent ?? '').value;
     if (Number.isFinite(value) && value > 0) return value;
@@ -44,13 +45,9 @@ function readBoxTotal(box: Element): number | null {
   return null;
 }
 
-function makeButton(neededDisplay: number, label: string): HTMLAnchorElement {
-  const btn = el('a', { className: BTN_CLASS, href: '#', textContent: label });
+function makeButton(neededDisplay: number, label: string, href: string): HTMLAnchorElement {
+  const btn = el('a', { className: BTN_CLASS, href, textContent: label });
   btn.dataset.shpAmount = String(neededDisplay);
-  btn.addEventListener('click', (e) => {
-    e.preventDefault();
-    location.href = `${ADDFUNDS_URL}#shp=${btn.dataset.shpAmount}`;
-  });
   return btn;
 }
 
@@ -63,12 +60,15 @@ function inject(format: MoneyFormat): void {
     const box = checkout.parentElement;
     if (!box || box.querySelectorAll('button').length !== 1) continue; // skip the 2-button row
 
+    const existing = box.querySelector<HTMLAnchorElement>(`.${BTN_CLASS}`);
     const total = readBoxTotal(box);
-    if (total == null) continue;
+    if (total == null) {
+      existing?.remove(); // zero or temporarily unavailable totals must not keep an old shortfall
+      continue;
+    }
 
     const totalCents = Math.round(total * format.factor);
     const { neededCents, neededDisplay } = topUpFromCents(totalCents, balanceCents, format);
-    const existing = box.querySelector<HTMLAnchorElement>(`.${BTN_CLASS}`);
 
     if (neededCents <= 0) {
       existing?.remove(); // balance covers the cart
@@ -76,12 +76,16 @@ function inject(format: MoneyFormat): void {
     }
 
     const label = t('cartTopupButton', [formatMoney(neededDisplay, format)]);
+    const href = createCartHref({ amount: neededDisplay, format });
     if (existing) {
-      existing.dataset.shpAmount = String(neededDisplay);
+      if (existing.dataset.shpAmount !== String(neededDisplay)) {
+        existing.dataset.shpAmount = String(neededDisplay);
+      }
+      if (existing.href !== href) existing.href = href;
       if (existing.textContent !== label) existing.textContent = label;
       continue;
     }
-    checkout.insertAdjacentElement('afterend', makeButton(neededDisplay, label));
+    checkout.insertAdjacentElement('afterend', makeButton(neededDisplay, label, href));
   }
 }
 
@@ -100,6 +104,10 @@ if (!format) {
     });
   };
   const root = document.getElementById('page_root') ?? document.body;
-  new MutationObserver(schedule).observe(root, { childList: true, subtree: true });
+  new MutationObserver(schedule).observe(root, {
+    childList: true,
+    characterData: true,
+    subtree: true,
+  });
   inject(format);
 }

@@ -1,59 +1,219 @@
-:root {
-  --shp-error: #e84c4c;
-  /* Matches Steam's default preset-price card width so the input lines up. */
-  --shp-input-min-width: 90px;
+#steam-helper-custom {
+  --shp-error: #ff9b9b;
+  box-sizing: border-box;
+  padding: 22px;
+  border: 1px solid #446174;
+  border-radius: 4px;
+  background: linear-gradient(135deg, #263e50, #1c2d3d);
+  color: #d6d7d8;
 }
-
-.shp-action {
-  float: right;
+#steam-helper-custom h1 {
+  margin: 0 0 6px;
+  color: #fff;
+  font-size: 21px;
+  font-weight: 400;
 }
-
-.shp-btn-disabled {
-  pointer-events: none;
-  opacity: 0.5;
+#steam-helper-custom .shp-minimum {
+  margin: 0 0 18px;
+  color: #a8bac8;
+  font-size: 13px;
 }
-
-.shp-btn-enabled {
-  pointer-events: auto;
-  opacity: 1;
+.shp-modes {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  background: #142536;
 }
-
-.shp-price-input {
-  min-width: var(--shp-input-min-width);
-}
-
-#shp-custom-input {
-  width: 100%;
+.shp-modes button {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 8px;
+  border: 0;
+  border-radius: 3px;
   background: transparent;
-  border: none;
-  color: inherit;
-  font-size: inherit;
-  font-family: inherit;
-  text-align: center;
-  outline: none;
-  padding: 0;
+  color: #a8bac8;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
 }
-
-#shp-custom-input::placeholder {
-  color: rgba(255, 255, 255, 0.3);
+.shp-modes button[aria-pressed='true'] {
+  background: #3c596d;
+  color: #fff;
+  box-shadow: 0 1px 3px #0004;
 }
-
-/* Hide the native number-input spinners across engines. */
-#shp-custom-input::-webkit-outer-spin-button,
-#shp-custom-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
+#steam-helper-custom label {
+  display: block;
+  margin-bottom: 8px;
+  color: #c7d5e0;
+  font-size: 13px;
+}
+.shp-input-row {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+}
+#steam-helper-custom .shp-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+#steam-helper-custom .shp-presets button {
+  flex: 1 0 auto;
+  padding: 7px 10px;
+  border: 1px solid #446174;
+  border-radius: 3px;
+  background: #263e50;
+  color: #c7d5e0;
+  font: inherit;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  cursor: pointer;
+}
+#steam-helper-custom .shp-presets button:hover:not(:disabled),
+#steam-helper-custom .shp-presets button[aria-pressed='true'] {
+  border-color: #66c0f4;
+  background: #3c596d;
+  color: #fff;
+}
+#steam-helper-custom .shp-presets button:disabled {
+  opacity: 0.45;
+  cursor: default;
 }
 #shp-custom-input {
-  -moz-appearance: textfield;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid #507088;
+  border-radius: 3px;
+  background: #101e2b;
+  color: #fff;
+  font-family: inherit;
+  font-size: 22px;
+  font-variant-numeric: tabular-nums;
 }
-
+#shp-custom-input::placeholder {
+  color: #72899c;
+}
+#shp-custom-input[aria-invalid='true'] {
+  border-color: var(--shp-error);
+}
+#steam-helper-custom :is(input, button, summary, a):focus-visible {
+  outline: 2px solid #66c0f4;
+  outline-offset: 3px;
+}
+.shp-submit {
+  flex-shrink: 0;
+  padding: 12px 20px;
+  border: 0;
+  border-radius: 3px;
+  background: linear-gradient(to right, #75b022, #588a1b);
+  color: #fff;
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
+}
+.shp-submit:hover:not(:disabled) {
+  background: linear-gradient(to right, #8ed629, #6aa621);
+}
+.shp-submit:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+#steam-helper-custom .shp-helper {
+  min-height: 18px;
+  margin: 9px 0 18px;
+  color: #a8bac8;
+  font-size: 12px;
+  line-height: 1.5;
+}
 .shp-text-error {
   color: var(--shp-error) !important;
 }
-
-/* Cart page top-up button: matches Steam's DialogButton geometry, green color. */
+.shp-preview {
+  padding: 14px 16px;
+  border-radius: 3px;
+  background: #111f2b88;
+}
+.shp-preview summary {
+  color: #c7d5e0;
+  font-size: 13px;
+  cursor: pointer;
+}
+.shp-breakdown {
+  margin: 14px 0 0;
+}
+.shp-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 7px 0;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.shp-row dt {
+  color: #a8bac8;
+}
+.shp-row dd {
+  margin: 0;
+  color: inherit;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+.shp-row-total {
+  margin-top: 5px;
+  padding-top: 11px;
+  border-top: 1px solid #385063;
+  color: #b7d782;
+}
+.shp-row-total dt {
+  color: inherit;
+}
+#steam-helper-custom .shp-preview-empty {
+  margin: 12px 0 0;
+  color: #91a4b4;
+  font-size: 11px;
+  line-height: 1.6;
+}
+#steam-helper-custom .shp-back-link {
+  display: inline-block;
+  margin-top: 18px;
+  color: #66c0f4;
+  font-size: 13px;
+  text-decoration: none;
+}
+#steam-helper-custom .shp-back-link:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+#steam-helper-custom [hidden],
+#prices_user [data-shp-native-preset][hidden] {
+  display: none !important;
+}
+@media (max-width: 540px) {
+  #steam-helper-custom {
+    padding: 16px;
+  }
+  .shp-input-row {
+    flex-direction: column;
+  }
+  .shp-submit {
+    min-height: 44px;
+  }
+  .shp-row {
+    gap: 8px;
+    font-size: 12px;
+  }
+}
+/* Cart page top-up button matches Steam's checkout button. */
 .shp-cart-btn {
-  box-sizing: content-box;
+  box-sizing: border-box;
   display: block;
   width: 100%;
   margin: 6px 0 2px;
@@ -67,12 +227,13 @@
   text-decoration: none;
   color: #fff;
   cursor: pointer;
-  user-select: none;
   background: linear-gradient(to right, #75b022, #588a1b);
-  transition: background 0.2s ease-out;
 }
-
 .shp-cart-btn:hover {
   color: #fff;
   background: linear-gradient(to right, #8ed629, #6aa621);
+}
+.shp-cart-btn:focus-visible {
+  outline: 2px solid #66c0f4;
+  outline-offset: 3px;
 }

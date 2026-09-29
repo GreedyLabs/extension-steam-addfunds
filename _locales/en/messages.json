@@ -26,10 +26,64 @@
     "message": "Top up $AMOUNT$ for this cart",
     "placeholders": { "amount": { "content": "$1" } }
   },
-  "addfundsFromCart": {
-    "message": "Amount needed for your cart"
-  },
   "addfundsClampedToMin": {
-    "message": "Set to the minimum top-up; some balance will remain."
+    "message": "The minimum top-up amount has been applied."
+  },
+  "modeLabel": {
+    "message": "Funding mode"
+  },
+  "modeAmount": {
+    "message": "Add an amount"
+  },
+  "modeTarget": {
+    "message": "Reach a balance"
+  },
+  "amountLabel": {
+    "message": "Amount to add"
+  },
+  "targetLabel": {
+    "message": "Target wallet balance"
+  },
+  "targetHint": {
+    "message": "Calculate only the amount needed from your current balance."
+  },
+  "invalidAmountError": {
+    "message": "Enter a valid amount. Unsupported decimal places and amounts that are too large cannot be used."
+  },
+  "balanceUnavailable": {
+    "message": "Your current balance is unavailable, so the amount needed to reach your target cannot be calculated."
+  },
+  "targetCovered": {
+    "message": "Your balance already meets or exceeds the target. No top-up is needed."
+  },
+  "targetRounded": {
+    "message": "Rounded up to the allowed input increment."
+  },
+  "previewTitle": {
+    "message": "Top-up calculation preview"
+  },
+  "previewCurrent": {
+    "message": "Current wallet balance"
+  },
+  "previewTopup": {
+    "message": "Amount to add"
+  },
+  "previewAfter": {
+    "message": "Estimated balance after top-up"
+  },
+  "previewEmpty": {
+    "message": "Enter an amount to preview your estimated balance."
+  },
+  "unknownBalance": {
+    "message": "Unavailable"
+  },
+  "backToCart": {
+    "message": "Back to cart"
+  },
+  "buttonBusy": {
+    "message": "Opening checkout…"
+  },
+  "presetAmountsLabel": {
+    "message": "Quick top-up amounts"
   }
 }

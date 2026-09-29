@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
   "name": "__MSG_extName__",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "__MSG_extDescription__",
-  "default_locale": "ko",
+  "default_locale": "en",
   "author": "GreedyLabs",
   "homepage_url": "https://github.com/GreedyLabs/extension-steam-addfunds",
   "browser_specific_settings": {

@@ -5,7 +5,16 @@ import {
   deriveFormat,
   formatMoney,
   computeTopUp,
+  groupInteger,
 } from '../src/lib/money';
+
+describe('groupInteger', () => {
+  it('supports Indian primary and secondary group sizes without changing Western defaults', () => {
+    expect(groupInteger('123456789', ',')).toBe('123,456,789');
+    expect(groupInteger('123456789', ',', { primary: 3, secondary: 2 })).toBe('12,34,56,789');
+    expect(groupInteger('123', ',', { primary: 3, secondary: 2 })).toBe('123');
+  });
+});
 
 describe('parseMoney', () => {
   it('parses KRW balance with fractional minor units', () => {
@@ -40,6 +49,21 @@ describe('deriveFactor', () => {
 });
 
 describe('deriveFormat', () => {
+  it('learns Indian grouping from a cart amount and retains it for the shortfall label', () => {
+    const format = deriveFormat(10000000, '₹1,00,000.00');
+    expect(format.grouping).toEqual({ primary: 3, secondary: 2 });
+    expect(formatMoney(12345.67, format)).toBe('₹12,345.67');
+    expect(formatMoney(1234567.89, format)).toBe('₹12,34,567.89');
+  });
+
+  it.each(['1 234,56 zł', '1\u00a0234,56 €', '1\u202f234,56 €', "CHF 1'234.56", 'CHF 1’234.56'])(
+    'preserves the grouping separator from %s',
+    (text) => {
+      const format = deriveFormat(123456, text);
+      expect(formatMoney(1234.56, format)).toBe(text);
+    },
+  );
+
   it('learns the KRW display format', () => {
     expect(deriveFormat(14626000, '₩ 146,260')).toEqual({
       prefix: '₩ ',

@@ -26,10 +26,64 @@
     "message": "充值所需 $AMOUNT$",
     "placeholders": { "amount": { "content": "$1" } }
   },
-  "addfundsFromCart": {
-    "message": "购物车结算所需金额"
-  },
   "addfundsClampedToMin": {
-    "message": "已设为最低充值额，将剩余部分余额。"
+    "message": "已应用最低充值金额。"
+  },
+  "modeLabel": {
+    "message": "充值方式"
+  },
+  "modeAmount": {
+    "message": "指定充值金额"
+  },
+  "modeTarget": {
+    "message": "达到目标余额"
+  },
+  "amountLabel": {
+    "message": "充值金额"
+  },
+  "targetLabel": {
+    "message": "目标钱包余额"
+  },
+  "targetHint": {
+    "message": "根据当前余额，仅计算所需补足的金额。"
+  },
+  "invalidAmountError": {
+    "message": "请输入有效金额。不支持的小数位数或过大的金额无法使用。"
+  },
+  "balanceUnavailable": {
+    "message": "无法获取当前余额，因此无法计算达到目标余额所需的金额。"
+  },
+  "targetCovered": {
+    "message": "当前余额已达到或超过目标，无需继续充值。"
+  },
+  "targetRounded": {
+    "message": "已按可输入的金额单位向上取整。"
+  },
+  "previewTitle": {
+    "message": "充值计算预览"
+  },
+  "previewCurrent": {
+    "message": "当前钱包余额"
+  },
+  "previewTopup": {
+    "message": "充值金额"
+  },
+  "previewAfter": {
+    "message": "充值后预计余额"
+  },
+  "previewEmpty": {
+    "message": "输入金额后即可查看预计余额。"
+  },
+  "unknownBalance": {
+    "message": "无法获取"
+  },
+  "backToCart": {
+    "message": "返回购物车"
+  },
+  "buttonBusy": {
+    "message": "正在跳转…"
+  },
+  "presetAmountsLabel": {
+    "message": "快速选择充值金额"
   }
 }
