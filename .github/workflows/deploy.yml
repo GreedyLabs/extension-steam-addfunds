@@ -8,10 +8,25 @@ on:
       - 'v*'
   pull_request:
   workflow_dispatch:
+    inputs:
+      targets:
+        description: Store to process
+        type: choice
+        options: [both, chrome, edge]
+        default: both
+      operation:
+        description: Operation (status does not modify the stores)
+        type: choice
+        options: [status, upload, publish, deploy]
+        default: status
+      source-run-id:
+        description: Original upload run (optional; matching upload is selected automatically)
+        type: string
+        required: false
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+permissions:
+  contents: read
+  actions: read
 
 jobs:
   check:
@@ -48,38 +63,20 @@ jobs:
         run: pnpm run ext:lint
 
   deploy:
-    name: Build & deploy
+    name: Deploy extension
     needs: check
-    # Never deploy on pull requests — only on pushes to main, version tags, or manual runs.
+    # PRs run checks only; the shared workflow owns packaging and independent store jobs.
     if: github.event_name != 'pull_request'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v6
-
-      - name: Setup Node
-        uses: actions/setup-node@v6
-        with:
-          node-version: 22
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Build & zip extension
-        run: pnpm run build:zip
-
-      - name: Deploy
-        uses: GreedyLabs/action-deploy-browser-extension@v1
-        with:
-          zip-path: extension.zip
-          targets: chrome, edge
-          chrome-extension-id: ${{ vars.CHROME_EXTENSION_ID }}
-          edge-product-id: ${{ vars.EDGE_PRODUCT_ID }}
-          publish: ${{ startsWith(github.ref, 'refs/tags/') }}
-        env:
-          CHROME_SERVICE_ACCOUNT_KEY: ${{ secrets.CHROME_SERVICE_ACCOUNT_KEY }}
-          EDGE_CLIENT_ID: ${{ secrets.EDGE_CLIENT_ID }}
-          EDGE_API_KEY: ${{ secrets.EDGE_API_KEY }}
+    uses: GreedyLabs/action-deploy-browser-extension/.github/workflows/deploy.yml@v2
+    with:
+      operation: ${{ github.event_name == 'push' && (startsWith(github.ref, 'refs/tags/') && 'publish' || 'upload') || inputs.operation }}
+      targets: ${{ inputs.targets != '' && inputs.targets != 'both' && inputs.targets || 'chrome, edge' }}
+      source-run-id: ${{ inputs.source-run-id }}
+      build-command: pnpm install --frozen-lockfile && pnpm run build:zip
+      chrome-publisher-id: ${{ vars.CHROME_PUBLISHER_ID }}
+      chrome-extension-id: ${{ vars.CHROME_EXTENSION_ID }}
+      edge-product-id: ${{ vars.EDGE_PRODUCT_ID }}
+    secrets:
+      CHROME_SERVICE_ACCOUNT_KEY: ${{ secrets.CHROME_SERVICE_ACCOUNT_KEY }}
+      EDGE_CLIENT_ID: ${{ secrets.EDGE_CLIENT_ID }}
+      EDGE_API_KEY: ${{ secrets.EDGE_API_KEY }}

@@ -62,6 +62,30 @@ pnpm build:zip      # 스토어 업로드용 extension.zip 생성
 
 수정 후에는 `dist/`를 재빌드하고 `chrome://extensions/`에서 확장의 새로고침(↻)을 누르면 반영됩니다.
 
+## 스토어 배포 설정
+
+GitHub 저장소의 **Settings → Secrets and variables → Actions**에서 다음 값을 설정합니다.
+
+| 종류     | 이름                         | 내용                           |
+| -------- | ---------------------------- | ------------------------------ |
+| Variable | `CHROME_PUBLISHER_ID`        | Chrome Web Store 게시자 ID     |
+| Variable | `CHROME_EXTENSION_ID`        | Chrome 확장 프로그램 ID        |
+| Variable | `EDGE_PRODUCT_ID`            | Edge Add-ons 제품 ID           |
+| Secret   | `CHROME_SERVICE_ACCOUNT_KEY` | Chrome 서비스 계정의 JSON 키   |
+| Secret   | `EDGE_CLIENT_ID`             | Edge Publish API 클라이언트 ID |
+| Secret   | `EDGE_API_KEY`               | Edge Publish API 키            |
+
+CI는 검사 후 [공통 배포 워크플로우](https://github.com/GreedyLabs/action-deploy-browser-extension)를 호출합니다. 확장 저장소는 빌드 명령과 스토어 설정만 전달하고, 원본 ZIP 보관·처리 기록 복원·스토어별 재시도는 공통 워크플로우가 관리합니다.
+
+- PR에서는 검사만 실행합니다.
+- `main` 반영 시 ZIP을 한 번 빌드해 Chrome과 Edge에 각각 업로드합니다.
+- 업로드가 끝난 같은 커밋에 `v*` 태그를 만들면 원본 ZIP과 기록을 재사용해 발행을 요청합니다. 태그 이름이 확장 버전을 바꾸지는 않습니다.
+- 실패한 스토어는 GitHub의 **Re-run failed jobs** 또는 해당 작업 재실행으로 재시도합니다.
+
+수동 실행에서는 스토어와 `status`·`upload`·`publish`·`deploy`를 선택할 수 있습니다. 기본값인 `status`는 스토어를 변경하지 않습니다. `publish`는 같은 커밋의 업로드 실행을 자동으로 찾으며, 특정 업로드를 지정하려면 `source-run-id`에 원본 업로드 실행 ID를 입력합니다. 이후 발행 실행의 ID는 원본 ZIP을 포함하지 않으므로 대신 사용할 수 없습니다.
+
+원본 ZIP과 처리 기록은 30일간 보관합니다. 기본 설정에서는 `main`이 이후 커밋으로 진행하면 이전 커밋의 발행을 차단합니다. 태그 발행을 먼저 시도한 뒤 선행 업로드 실패를 복구했다면, 새 수동 `publish`에 원본 업로드 ID를 지정하세요. 기록 만료·강제 종료 등의 복구 조건은 공통 워크플로우의 문서를 따릅니다. 발행 요청이 성공해도 실제 공개 전에는 스토어 심사가 남아 있을 수 있습니다.
+
 ## 기술 스택
 
 - TypeScript (esbuild 번들)

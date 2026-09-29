@@ -3,3 +3,4 @@
 node_modules
 dist
 .preview
+.browser-extension-deploy/
